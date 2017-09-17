@@ -1,4 +1,4 @@
-### [https://www.MyEtherWallet.com](https://www.MyEtherWallet.com)
+### [ClassicEtherWallet](https://ethereumproject.github.io/etherwallet/)
 
 ### [Chrome Extension](https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm)
 
@@ -20,22 +20,22 @@
 - [Reddit](https://www.reddit.com/r/MyEtherWallet/)
 
 
-### `mercury` is the development branch. gh-pages contains only the smaller dist folder only and is served to MyEtherWallet.com
+### `mercury` is the development branch. gh-pages contains only the smaller dist folder only and is served to ClassicEtherWallet.com
 
 - Our infrastructure ("node") is on AWS. [You can also use your own node.](https://myetherwallet.groovehq.com/knowledge_base/topics/how-can-i-connect-to-a-custom-node)
 - We also provide access to Infura.io & Etherscan.io nodes. Use the dropdown in the top-right.
 
 
-### MyEtherWallet
+### ClassicEtherWallet
 
-- MyEtherWallet is a free, open-source, client-side tool for easily & securely interacting with the Ethereum network. As one of the leading providers of Ethereum services, MyEtherWallet equips users with an easy-to-understand and accessible suite of tools for their needs.
+- ClassicEtherWallet is a free, open-source, client-side tool for easily & securely interacting with the Ethereum network. As one of the leading providers of Ethereum services, MyEtherWallet equips users with an easy-to-understand and accessible suite of tools for their needs.
 - It was created and is maintained by [kvhnuke](https://github.com/kvhnuke) and [tayvano](https://github.com/tayvano).
 
 #### Features
 
 - Create new wallets completely client side.
 - Access your wallet via unencrypted private key, encrypted private key, keystore files, mnemonics, Ledger Nano S & TREZOR hardware wallet.
-- Easily send ETH and *any* ERC-20 Standard Token. [Many tokens included as default.](https://myetherwallet.groovehq.com/knowledge_base/topics/can-i-send-my-steem-slash-btc-slash-ltc-slash-nem-slash-to-myetherwallet)
+- Easily send ETH and *any* ERC-20 or ERC-223 Standard Token. [Many tokens included as default.](https://myetherwallet.groovehq.com/knowledge_base/topics/can-i-send-my-steem-slash-btc-slash-ltc-slash-nem-slash-to-myetherwallet)
 - Generate, sign & send transactions offline, ensuring your private keys never touch an internet-connected device.
 - Securely access your ETH & Tokens on your [Ledger or TREZOR Hardware Wallet](https://myetherwallet.groovehq.com/knowledge_base/topics/hardware-wallet-recommends) via the MyEtherWallet interface (Chrome & Opera natively, Firefox w/ [add-on](https://addons.mozilla.org/en-US/firefox/addon/u2f-support-add-on/))
 - Now in 18 languages thanks 100% to the amazing Ethereum community.
