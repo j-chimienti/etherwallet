@@ -1,52 +1,12 @@
 'use strict';
 
-const _uniqueBy = require('lodash/uniqBy');
 
 var messagesCtrl = function ($scope,
                              $rootScope,
                              $interval,
                              globalService,
                              newMessageService,
-                             walletService, backgroundNodeService) {
-
-
-    const DATE = new Date();
-
-    // localStorage key
-    const KEY = '@messages@';
-
-
-    let CONTRACT_ADDRESS = '0x6A77417FFeef35ae6fe2E9d6562992bABA47a676';
-
-    const CONTRACT = nodes.nodeList.etc_ethereumcommonwealth_geth.abiList.find(contract => contract.address.toLowerCase() === CONTRACT_ADDRESS.toLowerCase());
-
-    if (!CONTRACT) {
-
-        throw new Error('ERROR FINDING CONTRACT: ' + CONTRACT_ADDRESS);
-    }
-
-
-    const {name, address, abi} = CONTRACT;
-
-    const messageContract = {
-        functions: [],
-        abi: JSON.parse(abi),
-        name,
-        address
-    };
-
-
-    messageContract.abi.forEach((item) => {
-
-        if (item.type === 'function') {
-
-            item.inputs.forEach(i => i.value = '');
-
-            messageContract.functions.push(item);
-        }
-
-    });
-
+                             walletService) {
 
     const sendMessageModal = new Modal(document.getElementById('sendMessageModal'));
     const newMessagesModal = new Modal(document.getElementById('newMessagesModal'));
@@ -55,22 +15,6 @@ var messagesCtrl = function ($scope,
     const config = {
         fetchMessageInterval: 30 // seconds
     };
-
-
-    const MESSAGE = {
-        from: '0x1234',
-        to: '', // adding param locally so can switch b/w accounts easier
-        text: 'TEST',
-        time: DATE.getTime(),
-        index: 0,
-    };
-
-
-    const messageSet = messages => _uniqueBy(messages, message => message.to + message.index);
-
-
-    const MESSAGE_STALING_PERIOD = 2160000; // 25 days
-
     const VISIBILITY = {
         LIST: 'list',
         NEW: 'new',
@@ -86,14 +30,8 @@ var messagesCtrl = function ($scope,
         rawTx: null,
         signedTx: null,
         msgCheckTime: null,
-        messagesList: {},
         messagesConversation: null,
         unlockWallet: false,
-        loadingMessages: false,
-        MESSAGE_STALING_PERIOD,
-        message_staling_period: new Date(DATE.getTime() - (MESSAGE_STALING_PERIOD * 1000)).getTime(),
-        NUMBER_OF_MESSAGES: 0,
-        NUMBER_OF_NEW_MESSAGES: 0,
         newMessage: {
             to: '',
             text: '',
@@ -107,268 +45,12 @@ var messagesCtrl = function ($scope,
             from: '',
         },
         interval: null,
-        messages: handleGetLocalMessages(),
     });
 
 
-    getMessageStalingPeriod();
 
-    function encodeInputs(inputs) {
-
-
-        const types = inputs.map(i => i.type);
-
-        const values = inputs.map(i => i.value || '');
-
-
-        return ethUtil.solidityCoder.encodeParams(types, values);
-
-
-    }
-
-
-    function findFunctionBy(name) {
-
-        return messageContract.functions.find(function_ => function_.name === name);
-    }
-
-
-    function encode_(functionName) {
-
-        const foundFunction = messageContract.functions.find(function_ => function_.name === functionName);
-
-        if (foundFunction) {
-
-
-            return ethFuncs.getFunctionSignature(ethUtil.solidityUtils.transformToFullName(foundFunction));
-
-
-        } else {
-
-            console.error('error locationg', functionName);
-        }
-
-
-    }
-
-    function handleContractCall(functionName, inputs_ = null, callback_) {
-
-        const foundFunction = messageContract.functions.find(function_ => function_.name === functionName);
-
-
-        if (!foundFunction) {
-
-            console.error('err');
-
-            return null;
-        }
-        let data = encode_(foundFunction.name);
-
-        if (inputs_) {
-
-            foundFunction.inputs.forEach((item, i) => item.value = inputs_[i]);
-
-            data += encodeInputs(foundFunction.inputs);
-        }
-
-
-        data = ethFuncs.sanitizeHex(data);
-
-        nodes.nodeList[backgroundNodeService.backgroundNode].lib.getEthCall({
-            to: messageContract.address,
-            data
-        }, function (data) {
-
-            if (data.error) {
-
-                uiFuncs.notifier.danger(data.msg);
-
-            }
-            callback_(data);
-
-        })
-
-
-    }
-
-    function getMessageStalingPeriod() {
-
-        handleContractCall('message_staling_period', null, function (result) {
-
-
-            if (result && 'data' in result) {
-
-                $scope.MESSAGE_STALING_PERIOD = parseInt(ethFuncs.hexToDecimal(result.data));
-            }
-            $scope.message_staling_period = new Date(DATE.getTime() - (MESSAGE_STALING_PERIOD * 1000)).getTime()
-        });
-
-
-    }
-
-
-    function getLastMsgIndex(addr, callback_ = console.log) {
-
-
-        handleContractCall('last_msg_index', [addr], callback_);
-    }
-
-    function getMessageByIndex(addr, index, callback_ = console.log) {
-
-        handleContractCall('getMessageByIndex', [addr, index], callback_);
-
-
-    }
-
-
-    function initMessages(addr) {
-
-
-
-
-
-        // filter messages by address in wallet
-        const messages = $scope.messages.slice().filter(message => message.to === addr);
-
-
-        mapMessagesToMessageList();
-
-
-        getLastMsgIndex(addr, function (result) {
-
-            if (result && result.hasOwnProperty('data')) {
-
-                const lastMsgIndex = parseInt(ethFuncs.hexToDecimal(result.data));
-
-
-                if (lastMsgIndex > 0) {
-
-                    const queue = [];
-                    let curIndex = lastMsgIndex;
-
-                    while (curIndex) {
-
-                        if (!messages.find(message => message.index === curIndex)) {
-                            queue.push(curIndex);
-
-                        }
-
-                        curIndex--;
-
-                    }
-
-                    if (queue.length === 0) {
-
-                        $scope.loadingMessages = false;
-
-                    }
-
-                    queue.forEach(index_ => getMessageByIndex(addr, index_, function (result) {
-
-
-                        if (!result.error && result.hasOwnProperty('data')) {
-
-                            const outTypes = findFunctionBy('getMessageByIndex').outputs.map(i => i.type);
-
-                            const [from, text, time] = ethUtil.solidityCoder.decodeParams(outTypes, result.data.replace('0x', ''));
-
-                            const MESSAGE = mapToMessage(from, addr, text, Number(time.toString()) * 1000, index_);
-
-
-                            $scope.messages.push(MESSAGE);
-
-                            $scope.saveMessages();
-                            mapMessagesToMessageList();
-
-
-                            if ($scope.visibility === $scope.VISIBILITY.CONVERSATION) {
-
-                                // update if sending msg to same addr
-
-                                $scope.messagesConversation = $scope.messages.filter(m => m.to === addr);
-                            }
-
-                        }
-
-                        $scope.loadingMessages = false;
-
-                    }));
-
-
-                } else {
-
-                    $scope.loadingMessages = false;
-
-                }
-
-
-            } else {
-
-                $scope.loadingMessages = false;
-
-                //$scope.notifier.danger('Error locating lastMsgIndex');
-                console.error('Error locating lastMsgIndex');
-            }
-
-
-        });
-
-
-    }
-
-    function validMessage(obj_) {
-
-        return Object.keys(MESSAGE).every(key => {
-
-
-            return obj_.hasOwnProperty(key);
-        });
-    }
-
-    function handleGetLocalMessages() {
-
-
-        let messages = [];
-
-        try {
-
-            const messages_ = JSON.parse(globalFuncs.localStorage.getItem(KEY));
-
-            messages = messageSet(messages_);
-
-        } catch (e) {
-
-            messages = [];
-
-        } finally {
-
-            if (!(messages && Array.isArray(messages) && messages.every(validMessage))) {
-
-                messages = messages.filter(validMessage);
-            }
-
-
-        }
-        return messages;
-    }
-
-
-    $scope.saveMessages = function saveMessages() {
-
-
-        let messages = $scope.messages.slice().filter(validMessage);
-
-
-        let messageSet_ = messageSet(messages);
-
-        // console.log(messageSet_, messageSet_.length);
-
-        globalFuncs.localStorage.setItem(KEY, JSON.stringify(messageSet_));
-
-        return messageSet_;
-
-    }
-
+    newMessageService.handleGetLocalMessages();
+    newMessageService.getMessageStalingPeriod();
 
     $scope.viewMessagesConversation = function (addr) {
 
@@ -378,48 +60,13 @@ var messagesCtrl = function ($scope,
 
     };
 
-
-    $scope.numberOfNewMessages = function numberOfNewMessages(address) {
-
-
-        //console.log('new messages', new Date($scope.message_staling_period));
-
-        return $scope.messages.filter(message =>
-
-            validMessage(message) &&
-            message.to === address &&
-            $scope.message_staling_period < message.time
-        ).length
-
-    };
-
-    $scope.numberOfNewMessagesFrom = function numberOfNewMessages(from, address) {
-
-
-        return $scope.messages.filter(message =>
-
-            validMessage(message) &&
-            message.to === address &&
-            message.from === from &&
-            $scope.message_staling_period < message.time
-        ).length
-
-    };
-
-
-    function mapToMessage(from, to, text, time, index) {
-
-        return Object.assign({}, MESSAGE, {from, to, text, time, index});
-    }
-
-
     /*
 
         messages are grouped by addr and sorted
      */
 
 
-    function mapMessagesToMessageList() {
+    $scope.mapMessagesToMessageList = function mapMessagesToMessageList() {
 
 
         // console.log($scope.messages);
@@ -427,10 +74,11 @@ var messagesCtrl = function ($scope,
 
         const addr = $scope.wallet.getAddressString();
 
-        const sorted = $scope.messages.filter(message => message.to === addr).sort((a, b) => b.time - a.time);
+        const sorted = newMessageService.messages.filter(message =>
+            message.to === addr).sort((a, b) => b.time - a.time);
 
 
-        $scope.messagesList = sorted.reduce((accum_, message) => {
+        const messagesList = sorted.reduce((accum_, message) => {
 
             if (!accum_[message.from]) {
 
@@ -444,21 +92,20 @@ var messagesCtrl = function ($scope,
         }, {});
 
 
-        $scope.NUMBER_OF_MESSAGES = sorted.length;
-        $scope.NUMBER_OF_NEW_MESSAGES = $scope.numberOfNewMessages(addr);
+        $scope.NUMBER_OF_NEW_MESSAGES = newMessageService.numberOfNewMessages(addr);
+
+        $scope.messagesList = messagesList;
+        return messagesList;
 
 
     }
 
     function messageInterval() {
 
-        $scope.msgCheckTime = new Date().toLocaleTimeString();
-        // console.log('check messages', $scope.msgCheckTime);
-
 
         if ($scope.unlockWallet && $scope.wallet) {
 
-            initMessages($scope.wallet.getAddressString());
+            newMessageService.initMessages($scope.wallet.getAddressString());
         }
 
 
@@ -488,10 +135,7 @@ var messagesCtrl = function ($scope,
 
         $scope.messagesList = {};
 
-        $scope.loadingMessages = true;
-
-
-        initMessages(walletService.wallet.getAddressString());
+        newMessageService.initMessages(address);
 
 
         $scope.interval = $interval(messageInterval, 1000 * config.fetchMessageInterval);
@@ -561,7 +205,7 @@ var messagesCtrl = function ($scope,
     function sendMessage(to, text) {
 
 
-        const sendMsgAbi = messageContract.abi.find(a => a.name === 'sendMessage');
+        const sendMsgAbi = newMessageService.CONTRACT.abi.find(a => a.name === 'sendMessage');
 
 
         var fullFuncName = ethUtil.solidityUtils.transformToFullName(sendMsgAbi);
@@ -575,7 +219,7 @@ var messagesCtrl = function ($scope,
 
         const estObj = {
             from: $scope.wallet.getAddressString(),
-            to: messageContract.address,
+            to: newMessageService.CONTRACT.address,
             data: $scope.tx.data,
             value: "0x00"
         };
@@ -656,10 +300,7 @@ var messagesCtrl = function ($scope,
     }
 
 
-    $scope.empty = function () {
 
-        return Object.keys($scope.messagesList).length === 0;
-    };
 
 
 }

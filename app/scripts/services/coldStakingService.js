@@ -309,7 +309,9 @@ var coldStakingService = function (walletService) {
     this.userCanWithdraw = function () {
 
 
-        return new BigNumber(this._round_interval[ajaxReq.type]).lt(this._staker_info.stake_time);
+        //todo: fixme
+        return false;
+        //return new BigNumber(this._round_interval[ajaxReq.type]).lt(this._staker_info.stake_time);
     };
     /*
 

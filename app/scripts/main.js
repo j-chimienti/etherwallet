@@ -151,7 +151,7 @@ app.directive('onReadFile', fileReaderDrtv);
 app.directive('walletBalanceDrtv', balanceDrtv);
 app.directive('walletDecryptDrtv', walletDecryptDrtv);
 app.directive('cxWalletDecryptDrtv', cxWalletDecryptDrtv);
-app.directive('messagesOverviewDrtv', ['globalService', messagesOverviewDrtv]);
+app.directive('messagesOverviewDrtv', ['globalService', 'newMessageService', messagesOverviewDrtv]);
 app.directive('arrayInputDrtv', arrayInputDrtv);
 app.directive('newMessagesDrtv', ['globalService', newMessagesDrtv]);
 app.directive('transactionCost', transactionCost);
@@ -172,7 +172,7 @@ app.controller('ensCtrl', ['$scope', '$sce', '$rootScope', 'walletService', ensC
 app.controller('dexnsCtrl', ['$scope', '$sce', '$rootScope', 'walletService', 'backgroundNodeService', dexnsCtrl]);
 app.controller('footerCtrl', ['$scope', footerCtrl]);
 app.controller('offlineTxCtrl', ['$scope', '$sce', '$rootScope', 'walletService', offlineTxCtrl]);
-app.controller('walletBalanceCtrl', ['$scope', '$sce', 'walletService', 'backgroundNodeService', 'modalService', 'coldStakingService', walletBalanceCtrl]);
+app.controller('walletBalanceCtrl', ['$scope', '$sce', 'walletService', 'backgroundNodeService', 'modalService', 'coldStakingService','newMessageService', walletBalanceCtrl]);
 app.controller('helpersCtrl', ['$scope', helpersCtrl]);
 app.controller('messagesCtrl', ['$scope', '$rootScope', '$interval', 'globalService', 'newMessageService', 'walletService', 'backgroundNodeService', messagesControl]);
 app.controller('encryptCtrl', ['$scope', 'walletService', encryptCtrl]);

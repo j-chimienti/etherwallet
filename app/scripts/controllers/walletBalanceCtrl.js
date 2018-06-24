@@ -1,5 +1,5 @@
 'use strict';
-var walletBalanceCtrl = function ($scope, $sce, walletService, backgroundNodeService, modalService, coldStakingService) {
+var walletBalanceCtrl = function ($scope, $sce, walletService, backgroundNodeService, modalService, coldStakingService, newMessageService) {
     $scope.ajaxReq = ajaxReq;
     $scope.erc20Abi = require('../abiDefinitions/erc20abi.json');
     $scope.DEXNS = require('../abiDefinitions/etcAbi.json')[5];
@@ -47,6 +47,7 @@ var walletBalanceCtrl = function ($scope, $sce, walletService, backgroundNodeSer
         if (!val) return;
         $scope.wallet = walletService.wallet;
         coldStakingService.handleInit();
+        newMessageService.initMessages(val);
 
 
     });

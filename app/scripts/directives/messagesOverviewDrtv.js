@@ -1,11 +1,13 @@
 'use strict';
 
-var messagesOverviewDrtv = function (globalService) {
+var messagesOverviewDrtv = function (globalService, newMessageService) {
     return {
         restrict: "E",
         template: require('./messagesOverviewDrtv.html'),
-        link: function ($scope, element, attrs) {
+        link: function ($scope) {
 
+
+            $scope.newMessageService = newMessageService;
 
             $scope.viewMessageList = function viewMessageList() {
 

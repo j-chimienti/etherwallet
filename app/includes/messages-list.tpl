@@ -1,21 +1,27 @@
 <section class="messagesList">
     <h2>Inbox</h2>
-    <ul class="list-group">
+    <ul
+            ng-if="wallet && wallet.getAddressString()"
+            class="list-group">
 
-        <li ng-if="!loadingMessages && empty()">No messages found for {{wallet.getAddressString()}}</li>
+        <li ng-if="!newMessageService.loadingMessages &&
+        newMessageService.messages.length == 0"
+        >
+            No messages found for {{wallet.getAddressString()}}
+        </li>
 
-        <p ng-if="loadingMessages">
+        <li ng-if="newMessageService.loadingMessages">
             LOADING...
-        </p>
-        <p ng-if="!loadingMessages && msgCheckTime">
+        </li>
+        <li ng-if="!newMessageService.loadingMessages && msgCheckTime">
             last checked: {{msgCheckTime}}
-        </p>
+        </li>
 
 
         <li
 
                 class="list-group-item pointer"
-                ng-repeat="message in messagesList"
+                ng-repeat="message in mapMessagesToMessageList()"
                 ng-click="viewMessagesConversation(message[0].from)"
 
         >
@@ -29,7 +35,6 @@
                     <span class="from">{{message[0].from}}</span>
 
 
-                    </span>
                 </div>
                 <div class="col-sm-3">
                     <div class="row">
@@ -41,10 +46,10 @@
                     <div class="row">
                         <b>New Messages: </b>
                         <b
-                                ng-class="numberOfNewMessagesFrom(message[0].from, message[0].to) > 0 ? 'text-success' : 'text-gray'"
+                                ng-class="newMessageService.numberOfNewMessages(message[0].from, message[0].to) > 0 ? 'text-success' : 'text-gray'"
                         >
 
-                            {{numberOfNewMessagesFrom(message[0].from, message[0].to)}}
+                            {{newMessageService.numberOfNewMessages(message[0].from, message[0].to)}}
                         </b>
                     </div>
                     <div>
