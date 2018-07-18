@@ -13,8 +13,9 @@ const lookup = function (lookupService) {
         template: require('./crosschain-ens-dexns-lookup.html'),
         link: function ($scope) {
 
+            $scope.lookupService = lookupService;
 
-            $scope.services = lookupService.services;
+            $scope.services = Object.keys(lookupService.services);
 
             $scope.input = {
                 currentService: lookupService.service,
