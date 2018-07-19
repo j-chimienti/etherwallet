@@ -22,9 +22,9 @@ const cssThemeDrtv = function () {
                 $scope.currentTheme = 'day';
             }
 
-            angular.element(window).bind('beforeunload', function () {
+            angular.element(window).bind('beforeunload', function (theme) {
 
-                globalFuncs.localStorage.setItem(localStorageKey, $scope.currentTheme);
+                globalFuncs.localStorage.setItem(localStorageKey, them);
             });
 
 

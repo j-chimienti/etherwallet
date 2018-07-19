@@ -230,15 +230,29 @@
                 <tr ng-repeat="token in wallet.tokenObjs track by $index"
                     ng-show="token.balance !== 0 && token.balance !== 'loading' || token.type !== 'default' || tokenVisibility === 'shown'">
                     <td class="mono wrap point">
+
+
                         <img src="images/icon-remove.svg"
                              class="token-remove" title="Remove Token"
                              ng-click="removeTokenFromLocal(token.symbol)"
                              ng-show="token.type!=='default'"/>
                         {{token.getBalance() }}
                     </td>
-                    <td>{{token.getSymbol()}}</td>
-                    <td ng-if="token.dexns.name && token.dexns.info">
-                        {{token.dexns.info}}
+                    <td>
+                        {{token.getSymbol()}}
+
+
+                    </td>
+                    <td
+                            ng-if="token.dexns.name && token.dexns.info"
+                            class="account-help-icon"
+                    >
+                        <img src="images/icon-help.svg"
+                             class="help-icon"/>
+                        <p class="account-help-text"
+                        >
+                            {{token.dexns.info}}
+                        </p>
                     </td>
                 </tr>
             </table>

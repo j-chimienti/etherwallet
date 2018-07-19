@@ -139,26 +139,26 @@ const lookupService = function (dexnsService, walletService) {
         return node.toString();
     }
 
-    this.testLookup = function () {
-
-
-        this.lookup('dexaran').then((r) => {
-
-            this.service = 'ens';
-
-
-            this.lookup('myetherwallet').then((r1) => {
-
-
-                this.service = 'ecns';
-                this.lookup('myaddress').then(r2 => {
-
-
-                })
-            })
-
-        })
-    };
+    // this.testLookup = function () {
+    //
+    //
+    //     this.lookup('dexaran').then((r) => {
+    //
+    //         this.service = 'ens';
+    //
+    //
+    //         this.lookup('myetherwallet').then((r1) => {
+    //
+    //
+    //             this.service = 'ecns';
+    //             this.lookup('myaddress').then(r2 => {
+    //
+    //
+    //             })
+    //         })
+    //
+    //     })
+    // };
 
 
     this.mapServiceToNetwork = function mapServiceToNetwork(_service) {
