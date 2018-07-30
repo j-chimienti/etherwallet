@@ -5,6 +5,14 @@ var en = function () {
 en.code = 'en';
 en.data = {
 
+    OC_Label_1: "",
+    OC_Label_2: "",
+    OC_OfficialityChecker: "Officiality Checker",
+    OC_Check: "Check",
+    OC_NotOfficial: "Not Official",
+
+    OC_Official: "Official",
+    loading: "loading...",
     DEXNS_href: 'You don\'t have a Name yet.\n' +
     'You can register one for your address',
     DEXNS_name: "DexNS Name",
@@ -30,6 +38,8 @@ en.data = {
 
     DELETE: 'Delete',
     /* DexNS tabs */
+
+    NAV_Network_Info: "Network Info",
 
     NAV_DexNS: 'DexNS',
     NAV_Decentralized_Naming_Service: 'Decentralized Naming Service',

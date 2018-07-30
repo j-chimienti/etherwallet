@@ -109,6 +109,13 @@ var globalService = function ($http, $httpParamSerializerJQLike) {
             mew: true,
             cx: true
         },
+        networkInfo: {
+            id: 15,
+            name: "NAV_Network_Info",
+            url: "network-info",
+            mew: true,
+            cx: true,
+        }
     };
     var currentTab = 0;
     if (typeof chrome != 'undefined')

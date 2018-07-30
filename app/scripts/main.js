@@ -139,6 +139,7 @@ var backgroundNodeService = require('./services/backgroundNodeService');
 
 
 // DIRECTIVES
+var officialityChecker = require('./directives/officiality-checker');
 var lookup = require('./directives/crosschain-lookup');
 var dexnsNameDisplay = require('./directives/dexns-name-display');
 var blockiesDrtv = require('./directives/blockiesDrtv');
@@ -189,7 +190,7 @@ app.factory('lookupService', ['dexnsService', 'walletService', lookupService]);
 app.factory('messageService', messageService);
 app.factory('coldStakingService', ['walletService', coldStakingService]);
 
-
+app.directive('officialityChecker', [officialityChecker]);
 app.directive('dexnsNameDisplay', ['dexnsService', 'walletService', 'globalService', dexnsNameDisplay]);
 app.directive('lookup', ['$rootScope', 'lookupService', lookup])
 app.directive('blockieAddress', blockiesDrtv);
