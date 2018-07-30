@@ -1,26 +1,19 @@
 <main class="tab-pane">
 
     <article>
-        <h1 class="text-center " translate="OC_OfficialityChecker" aria-live="polite">Callisto Officiality
+        <h1 class="text-center" translate="OC_OfficialityChecker">Callisto Officiality
             Checker</h1>
-        <p class="text-center " translate="OC_Label_1">Allows you to check whether a certain media resource is
+        <p class="text-center" translate="OC_Label_1">Allows you to check whether a certain media resource is
             considered "official" at Callisto or not.</p>
 
         <section>
-            <!-- IF NOT CLO CHAIN -->
-            <div class="alert alert-danger text-center ng-hide">
-                <p class="ng-binding"> The Callisto Officiality Checker is only available on the CLO chains. You are
-                    currently on the CLO chain. <br> Please use the node switcher in the upper right corner to select
-                    "CLO". </p>
-            </div>
-            <!-- / IF NOT CLO CHAIN -->
 
             <div class="block">
 
                 <form ng-submit="handleSubmit()">
                     <label translate="OC_Label_2">Enter link to the media resource:</label>
                     <input
-                            type="url"
+                            type="text"
                             ng-model="input.link"
                             placeholder="https://callisto.network/"
                             class="form-control"

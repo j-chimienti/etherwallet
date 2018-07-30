@@ -1,32 +1,28 @@
 'use strict';
 
-class OfficialityContract extends InitContract {
+/*
+
+    https://github.com/yuriy77k/Officiality-checker-web3.js-/blob/master/CEW_tab/app/scripts/controllers/officialityCheckerCtrl.js#L41
 
 
-    tester() {
+ */
+function mapToURL(_url) {
+
+    try {
+
+        const url = new URL(_url);
+
+        return url.protocol + "//" + url.host.match(/\w+\.\w+$/)[0] + url.pathname.match(/^\/\w*\/?/)[0];
+
+    } catch (e) {
 
 
-        const paths = [
-            'callisto.network',
-            'https://callisto.network/',
-            'https://callisto.network',
-        ];
-
-        Promise.all(
-            paths.map(path => this.handle_is_official(path))
-        ).then(result => {
-
-            const allOfficial = result.every(i => i);
-
-            if (!allOfficial) {
-
-                console.error(result, paths);
-            } else {
-
-                console.log('success', result, allOfficial);
-            }
-        })
+        return null;
     }
+}
+
+
+class OfficialityContract extends InitContract {
 
 
     constructor() {
@@ -139,19 +135,7 @@ class OfficialityContract extends InitContract {
     handle_is_official(path) {
 
 
-        function mapToURL(_path) {
 
-            try {
-
-                const url = new URL(_path);
-
-                return url.protocol + "//" + url.host.match(/\w+\.\w+$/)[0] + url.pathname.match(/^\/\w*\/?/)[0];
-
-            } catch (e) {
-
-                return null;
-            }
-        }
 
         const URLS = [
             path,
@@ -161,22 +145,44 @@ class OfficialityContract extends InitContract {
             "https://" + path + '/'
         ].map(mapToURL).filter(i => i);
 
-        console.log('URLS', URLS);
+        // console.log('URLS', URLS);
 
 
         return Promise.all(URLS.map(_url => this.call('is_official', {inputs: [_url]}))).then(result => {
 
-
             this.is_official = result.some(item => item[0].value);
-
             return this.is_official;
-
         });
+    }
+
+
+    _test() {
+
+
+        // should parse urls and return true for possible user inputs
+        const paths = [
+            'callisto.network',
+            'https://callisto.network/',
+            'https://callisto.network',
+        ];
+
+        Promise.all(paths.map(path => this.handle_is_official(path))).then(result => {
+
+            const allOfficial = result.every(i => i);
+
+            if (!allOfficial) {
+
+                console.error(result, paths);
+            } else {
+
+                console.log('success', result, allOfficial);
+            }
+        })
     }
 }
 
 
-var officialityChecker = function () {
+const officialityChecker = function () {
 
     // https://github.com/EthereumCommonwealth/Proposals/issues/10
 
@@ -196,12 +202,11 @@ var officialityChecker = function () {
             scope.handleSubmit = function () {
 
                 scope.input.show = 1;
-                scope.contract.handle_is_official(scope.input.link).then(result => {
+                scope.contract.handle_is_official(scope.input.link).then(is_official => {
 
                     scope.$apply(function () {
-
-                        scope.input.show = result ? 2 : 3;
-                        console.log('result', result, scope.input.show);
+                        scope.input.show = is_official ? 2 : 3;
+                        // console.log('is_official', is_official, scope.input.show);
                     });
                 })
             }

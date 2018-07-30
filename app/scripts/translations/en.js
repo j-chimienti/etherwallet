@@ -5,34 +5,34 @@ var en = function () {
 en.code = 'en';
 en.data = {
 
-    OC_Label_1: "",
-    OC_Label_2: "",
+    OC_Label_1: "Allows you to check whether a certain media resource is\n" +
+        "            considered \"official\" at Callisto or not.",
+    OC_Label_2: "Enter link to the media resource:",
     OC_OfficialityChecker: "Officiality Checker",
     OC_Check: "Check",
     OC_NotOfficial: "Not Official",
-
     OC_Official: "Official",
     loading: "loading...",
     DEXNS_href: 'You don\'t have a Name yet.\n' +
-    'You can register one for your address',
+        'You can register one for your address',
     DEXNS_name: "DexNS Name",
     DEXNS_ownership_expires: 'Ownership Expires',
     DEXNS_end_time: 'End Time',
     LOOKUP_SERVICE: 'Lookup Service:',
     COLD_STAKING_NO_WITHDRAW: 'You do not have any deposit to withdraw.',
     COLD_STAKING_START_STAKING_WARNING: 'You already have funds in staking contract.\n' +
-    '                            You will lose your staking reward if you make a new deposit into the contract.\n' +
-    '                            You should withdraw your staking reward first or use a another account for a new staking\n' +
-    '                            deposit.',
+        '                            You will lose your staking reward if you make a new deposit into the contract.\n' +
+        '                            You should withdraw your staking reward first or use a another account for a new staking\n' +
+        '                            deposit.',
     COLD_STAKING_LOCKED_WARNING: 'Your funds will be locked for 172,800 blocks (approximately 1 month)\n' +
-    '                        and you will be unable to withdraw within the locking period',
+        '                        and you will be unable to withdraw within the locking period',
 
     COLD_STAKING_PAY_TX_FEE_WARNING: 'You need to pay transaction fees to start staking,\n' +
-    '                        withdraw your stake, or claim staking rewards! Make sure that you have enough\n' +
-    '                        funds left on your balance to perform these transactions.',
+        '                        withdraw your stake, or claim staking rewards! Make sure that you have enough\n' +
+        '                        funds left on your balance to perform these transactions.',
 
     COLD_STAKING_UNPRED_WARNING: 'Staking rewards are very unpredictable and the amount of reward\n' +
-    '                        depends on the time when you are claiming it.',
+        '                        depends on the time when you are claiming it.',
 
     COLD_STAKING_UNDERSTAND: 'I Understand, proceed anyway',
 
