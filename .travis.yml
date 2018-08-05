@@ -24,7 +24,16 @@
 #    repo: kvhnuke/etherwallet
 #    branch: mercury
 #    tags: true
-
+cache:
+  directories:
+  - node_modules
+before_script: npm install -g gulp
+script:
+- gulp prep
+before_deploy:
+#- mkdir deploy
+#- gulp travisZip
+- gulp build
 deploy:
   provider: pages
   file: dist/*
