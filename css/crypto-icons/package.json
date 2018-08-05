@@ -1,6 +1,6 @@
 {
   "name": "crypto-icons",
-  "version": "1.0.12",
+  "version": "1.0.17",
   "description": "Guarda is glad to present our set of icons for various cryptocurrencies and tokens that can be downloaded and used completely for free.",
   "main": "index.js",
   "scripts": {
@@ -32,7 +32,7 @@
   "homepage": "https://guarda.co/",
   "license": "MIT",
   "devDependencies": {
-    "stylelint": "^9.2.1",
+    "stylelint": "^9.4.0",
     "stylelint-config-standard": "^18.2.0"
   }
 }
