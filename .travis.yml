@@ -30,7 +30,7 @@ cache:
 before_script: npm install -g gulp
 #script:
 #- gulp prep
-before_deploy:
+script:
 #- mkdir deploy
 #- gulp travisZip
 - gulp build
