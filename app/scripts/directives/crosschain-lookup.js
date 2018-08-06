@@ -5,28 +5,31 @@
     Lookup name based on service
  */
 const lookup = function($rootScope, lookupService) {
-  return {
-    template: require("./crosschain-lookup.html"),
-    link: function($scope) {
-      $scope.lookupService = lookupService;
+    return {
+        template: require("./crosschain-lookup.html"),
+        link: function($scope) {
+            $scope.lookupService = lookupService;
 
-      $scope.services = Object.keys(lookupService.services);
+            $scope.services = Object.keys(lookupService.services);
 
-      $scope.input = {
-        currentService: lookupService.service
-      };
+            $scope.input = {
+                currentService: lookupService.service
+            };
 
-      $scope.handleChange = function(_service) {
-        lookupService.setNetwork(_service);
+            $scope.handleChange = function(_service) {
+                lookupService.setNetwork(_service);
 
-        if (lookupService.service === "none") {
-          $scope.addressDrtv.showDerivedAddress = false;
+                if (lookupService.service === "none") {
+                    $scope.addressDrtv.showDerivedAddress = false;
+                }
+
+                $rootScope.$broadcast(
+                    "lookupName",
+                    $scope.addressDrtv.ensAddressField
+                );
+            };
         }
-
-        $rootScope.$broadcast("lookupName", $scope.addressDrtv.ensAddressField);
-      };
-    }
-  };
+    };
 };
 
 module.exports = lookup;
