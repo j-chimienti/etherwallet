@@ -3,6 +3,15 @@
 var en = function() {};
 en.code = "en";
 en.data = {
+    OC_Label_1:
+        "Allows you to check whether a certain media resource is\n" +
+        '            considered "official" at Callisto or not.',
+    OC_Label_2: "Enter link to the media resource:",
+    OC_OfficialityChecker: "Officiality Checker",
+    OC_Check: "Check",
+    OC_NotOfficial: "Not Official",
+    OC_Official: "Official",
+    loading: "loading...",
     Network: "Network:",
     ADDR_COPY: "Address copied to clipboard!",
     COPY_TO_CLIPBOARD: "copy to clipboard",
