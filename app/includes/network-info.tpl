@@ -1,7 +1,16 @@
 <div
     ng-if="globalService.currentTab === globalService.tabs.networkInfo.id">
 
-    <h1>{{ajaxReq.type}} Network Info</h1>
+    <h1>
+        <span
+            class="{{'text-lg icon icon-' + ajaxReq.type.toLowerCase()}}"
+            ng-style="{color: colors[ajaxReq.type.toLowerCase()]}"
+        >
+            {{ajaxReq.type}}
+        </span>
+        Network Info</h1>
+
+    <p>Latest Block#: {{currentBlockNumber | number}} </p>
 
     <div ng-switch="ajaxReq.type">
 

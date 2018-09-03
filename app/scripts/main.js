@@ -105,7 +105,6 @@ var contractsCtrl = require("./controllers/contractsCtrl");
 var broadcastTxCtrl = require("./controllers/broadcastTxCtrl");
 var ensCtrl = require("./controllers/ensCtrl");
 var dexnsCtrl = require("./controllers/dexnsCtrl");
-var footerCtrl = require("./controllers/footerCtrl");
 var offlineTxCtrl = require("./controllers/offlineTxCtrl");
 var walletBalanceCtrl = require("./controllers/walletBalanceCtrl");
 var backgroundNodeCtrl = require("./controllers/backgroundNodeCtrl");
@@ -299,7 +298,6 @@ app.controller("dexnsCtrl", [
     "dexnsService",
     dexnsCtrl
 ]);
-app.controller("footerCtrl", ["$scope", footerCtrl]);
 app.controller("offlineTxCtrl", [
     "$scope",
     "$sce",
