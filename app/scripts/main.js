@@ -90,58 +90,59 @@ window.CustomGasMessages = CustomGasMessages;
 
 // CONTROLLERS
 
-var tabsCtrl = require("./controllers/tabsCtrl");
-var viewCtrl = require("./controllers/viewCtrl");
-var coldStakingCtrl = require("./controllers/coldStakingCtrl");
-var walletGenCtrl = require("./controllers/walletGenCtrl");
-var bulkGenCtrl = require("./controllers/bulkGenCtrl");
-var decryptWalletCtrl = require("./controllers/decryptWalletCtrl");
-var viewWalletCtrl = require("./controllers/viewWalletCtrl");
-var txStatusCtrl = require("./controllers/txStatusCtrl");
-var sendTxCtrl = require("./controllers/sendTxCtrl");
-var swapCtrl = require("./controllers/swapCtrl");
-var signMsgCtrl = require("./controllers/signMsgCtrl");
-var contractsCtrl = require("./controllers/contractsCtrl");
-var broadcastTxCtrl = require("./controllers/broadcastTxCtrl");
-var ensCtrl = require("./controllers/ensCtrl");
-var dexnsCtrl = require("./controllers/dexnsCtrl");
-var offlineTxCtrl = require("./controllers/offlineTxCtrl");
-var walletBalanceCtrl = require("./controllers/walletBalanceCtrl");
-var backgroundNodeCtrl = require("./controllers/backgroundNodeCtrl");
-var encryptCtrl = require("./controllers/encryptCtrl");
-var helpersCtrl = require("./controllers/helpersCtrl");
-var messagesControl = require("./controllers/messagesCtrl");
-var switchNetworkCtrl = require("./controllers/switchNetworkCtrl");
+const tabsCtrl = require("./controllers/tabsCtrl");
+const viewCtrl = require("./controllers/viewCtrl");
+const coldStakingCtrl = require("./controllers/coldStakingCtrl");
+const walletGenCtrl = require("./controllers/walletGenCtrl");
+const bulkGenCtrl = require("./controllers/bulkGenCtrl");
+const decryptWalletCtrl = require("./controllers/decryptWalletCtrl");
+const viewWalletCtrl = require("./controllers/viewWalletCtrl");
+const txStatusCtrl = require("./controllers/txStatusCtrl");
+const sendTxCtrl = require("./controllers/sendTxCtrl");
+const swapCtrl = require("./controllers/swapCtrl");
+const signMsgCtrl = require("./controllers/signMsgCtrl");
+const contractsCtrl = require("./controllers/contractsCtrl");
+const broadcastTxCtrl = require("./controllers/broadcastTxCtrl");
+const ensCtrl = require("./controllers/ensCtrl");
+const dexnsCtrl = require("./controllers/dexnsCtrl");
+const offlineTxCtrl = require("./controllers/offlineTxCtrl");
+const walletBalanceCtrl = require("./controllers/walletBalanceCtrl");
+const backgroundNodeCtrl = require("./controllers/backgroundNodeCtrl");
+const encryptCtrl = require("./controllers/encryptCtrl");
+const helpersCtrl = require("./controllers/helpersCtrl");
+const messagesControl = require("./controllers/messagesCtrl");
+const switchNetworkCtrl = require("./controllers/switchNetworkCtrl");
 
 // SERVICES
 
-var lookupService = require("./services/lookup");
-var globalService = require("./services/globalService");
-var coldStakingService = require("./services/coldStakingService");
-var modalService = require("./services/modalService");
-var walletService = require("./services/walletService");
-var messageService = require("./services/messageService");
-var dexnsService = require("./services/dexnsService");
-var backgroundNodeService = require("./services/backgroundNodeService");
+const lookupService = require("./services/lookup");
+const globalService = require("./services/globalService");
+const coldStakingService = require("./services/coldStakingService");
+const modalService = require("./services/modalService");
+const walletService = require("./services/walletService");
+const messageService = require("./services/messageService");
+const dexnsService = require("./services/dexnsService");
+const backgroundNodeService = require("./services/backgroundNodeService");
 
 // DIRECTIVES
-var officialityChecker = require("./directives/officiality-checker");
-var lookup = require("./directives/crosschain-lookup");
-var dexnsNameDisplay = require("./directives/dexns-name-display");
-var blockiesDrtv = require("./directives/blockiesDrtv");
-var addressFieldDrtv = require("./directives/addressFieldDrtv");
-var QRCodeDrtv = require("./directives/QRCodeDrtv");
-var walletDecryptDrtv = require("./directives/walletDecryptDrtv");
-var messagesOverviewDrtv = require("./directives/messagesOverviewDrtv");
-var cssThemeDrtv = require("./directives/cssThemeDrtv");
-var cxWalletDecryptDrtv = require("./directives/cxWalletDecryptDrtv");
-var fileReaderDrtv = require("./directives/fileReaderDrtv");
-var transactionCost = require("./directives/transactionCostDtrv");
-var balanceDrtv = require("./directives/balanceDrtv");
-var arrayInputDrtv = require("./directives/arrayInputDrtv");
-var newMessagesDrtv = require("./directives/newMessagesDrtv");
+const officialityChecker = require("./directives/officiality-checker");
+const lookup = require("./directives/crosschain-lookup");
+const dexnsNameDisplay = require("./directives/dexns-name-display");
+const blockiesDrtv = require("./directives/blockiesDrtv");
+const addressFieldDrtv = require("./directives/addressFieldDrtv");
+const QRCodeDrtv = require("./directives/QRCodeDrtv");
+const walletDecryptDrtv = require("./directives/walletDecryptDrtv");
+const messagesOverviewDrtv = require("./directives/messagesOverviewDrtv");
+const cssThemeDrtv = require("./directives/cssThemeDrtv");
+const cxWalletDecryptDrtv = require("./directives/cxWalletDecryptDrtv");
+const fileReaderDrtv = require("./directives/fileReaderDrtv");
+const transactionCost = require("./directives/transactionCostDtrv");
+const balanceDrtv = require("./directives/balanceDrtv");
+const arrayInputDrtv = require("./directives/arrayInputDrtv");
+const newMessagesDrtv = require("./directives/newMessagesDrtv");
 const sendTransactionFormDrtv = require("./directives/sendTransactionForm");
 const dexnsTokenRegistrationForm = require("./directives/dexns-token-registration");
+const networkInfo = require("./directives/networkInfo");
 
 const coinIcon = require("./directives/coinIcon");
 if (IS_CX) {
@@ -199,7 +200,7 @@ app.factory("messageService", messageService);
 app.factory("coldStakingService", ["walletService", coldStakingService]);
 
 app.directive("coinIcon", coinIcon);
-
+app.directive("networkInfo", networkInfo);
 app.directive("sendTransactionForm", sendTransactionFormDrtv);
 app.directive("officialityChecker", [officialityChecker]);
 app.directive("dexnsTokenRegistrationForm", dexnsTokenRegistrationForm);
