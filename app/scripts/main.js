@@ -97,7 +97,7 @@ const walletGenCtrl = require("./controllers/walletGenCtrl");
 const bulkGenCtrl = require("./controllers/bulkGenCtrl");
 const decryptWalletCtrl = require("./controllers/decryptWalletCtrl");
 const viewWalletCtrl = require("./controllers/viewWalletCtrl");
-const txStatusCtrl = require("./controllers/txStatusCtrl");
+const TxStatusController = require("./controllers/TxStatusController");
 const sendTxCtrl = require("./controllers/sendTxCtrl");
 const swapCtrl = require("./controllers/swapCtrl");
 const signMsgCtrl = require("./controllers/signMsgCtrl");
@@ -125,6 +125,8 @@ const dexnsService = require("./services/dexnsService");
 const backgroundNodeService = require("./services/backgroundNodeService");
 
 // DIRECTIVES
+const validTxHash = require("./directives/validTxHash");
+const txStatus = require("./directives/txStatus");
 const officialityChecker = require("./directives/officiality-checker");
 const lookup = require("./directives/crosschain-lookup");
 const dexnsNameDisplay = require("./directives/dexns-name-display");
@@ -199,6 +201,8 @@ app.factory("lookupService", ["dexnsService", lookupService]);
 app.factory("messageService", messageService);
 app.factory("coldStakingService", ["walletService", coldStakingService]);
 
+app.directive("validTxHash", validTxHash);
+
 app.directive("coinIcon", coinIcon);
 app.directive("networkInfo", networkInfo);
 app.directive("sendTransactionForm", sendTransactionFormDrtv);
@@ -210,6 +214,8 @@ app.directive("dexnsNameDisplay", [
     "globalService",
     dexnsNameDisplay
 ]);
+
+app.directive("txStatus", txStatus);
 app.directive("eosKeypair", require("./directives/eos-keypair"));
 app.directive("lookup", ["$rootScope", "lookupService", lookup]);
 app.directive("blockieAddress", blockiesDrtv);
@@ -263,7 +269,7 @@ app.controller("viewWalletCtrl", [
     "coldStakingService",
     viewWalletCtrl
 ]);
-app.controller("txStatusCtrl", ["$scope", "$rootScope", txStatusCtrl]);
+app.controller("TxStatusController", ["$http", "$scope", TxStatusController]);
 app.controller("sendTxCtrl", [
     "$scope",
     "$sce",

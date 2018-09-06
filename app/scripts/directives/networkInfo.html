@@ -5,6 +5,9 @@
         <coin-icon icon="{{ajaxReq.type.toLowerCase()}}"/>
         Network Info
     </h1>
+
+
+
     <table class="table">
         <tbody>
         <tr>
@@ -28,8 +31,8 @@
                 Explorer
             </td>
             <td>
-                <a href="{{explorerOrigin}}" target="_blank" rel="noopener noreferrer">
-                    {{explorerOrigin}}
+                <a href="{{explorerOrigin()}}" target="_blank" rel="noopener noreferrer">
+                    {{explorerOrigin()}}
                 </a>
             </td>
         </tr>
@@ -52,6 +55,12 @@
                                 <form officiality-checker name="officialityChecker" novalidate>
                                 </form>
                             </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <tx-status/>
             </td>
         </tr>
         </tbody>

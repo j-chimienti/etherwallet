@@ -83,8 +83,6 @@ en.data = {
     NAV_CheckTxStatus: "Check TX Status",
     NAV_TxStatus: "TX Status",
     tx_Details: "Transaction Details",
-    tx_Summary:
-        'During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool aims to give you the ability to find and "cancel" / replace these TXs. ** This is not typically something you can do. It should not be relied upon & will only work when the TX Pools are full. [Please, read about this tool here.](https://myetherwallet.groovehq.com/knowledge_base/topics/how-can-i-check-on-the-status-of-my-transaction-can-i-cancel-override-overwrite-replace-or-do-anything-once-a-transaction-has-been-sent)**',
     tx_notFound: "Transaction Not Found",
     tx_notFound_1:
         "This TX cannot be found in the TX Pool of the node you are connected to.",
