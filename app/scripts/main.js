@@ -269,7 +269,7 @@ app.controller("viewWalletCtrl", [
     "coldStakingService",
     viewWalletCtrl
 ]);
-app.controller("TxStatusController", ["$http", "$scope", TxStatusController]);
+app.controller("TxStatusController", ["$scope", TxStatusController]);
 app.controller("sendTxCtrl", [
     "$scope",
     "$sce",

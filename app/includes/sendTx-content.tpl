@@ -32,10 +32,5 @@
 
     <wallet-balance-drtv></wallet-balance-drtv>
 
-
-    <div ng-show="checkTxPage" ng-click="checkTxReadOnly=!checkTxReadOnly" class="small text-right text-gray-lighter">
-        <small>Advanced Users Only.</small>
-    </div>
-
 </article>
 <!-- / Sidebar -->

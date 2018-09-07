@@ -62,7 +62,6 @@
                class="form-control"
                placeholder="50"
                ng-model="gasPriceDec"
-               ng-disabled="checkTxReadOnly"
                ng-class="Validator.isPositiveNumber(gasPriceDec) ? 'is-valid' : 'is-invalid'" />
         <div class="input-group-btn">
           <button style="min-width: 170px" class="btn btn-default">  WEI </button>

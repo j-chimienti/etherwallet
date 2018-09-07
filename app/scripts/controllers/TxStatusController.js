@@ -1,14 +1,15 @@
 "use strict";
+
+const statusCodes = {
+    found: 0,
+    notFound: 1,
+    mined: 2
+};
+
 const BigNumber = require("bignumber.js");
 
-module.exports = function TxStatusController($http, $scope) {
-    $scope.checkTxPage = true;
-    $scope.checkTxReadOnly = true;
-    $scope.txStatus = {
-        found: 0,
-        notFound: 1,
-        mined: 2
-    };
+module.exports = function TxStatusController($scope) {
+    $scope.txStatus = statusCodes;
     $scope.txInfo = {
         status: null, // notFound foundInPending foundOnChain
         hash:
@@ -17,60 +18,43 @@ module.exports = function TxStatusController($http, $scope) {
         from: "",
         to: "",
         value: "",
-        valueStr: "",
         gasLimit: "",
         gasPrice: "",
         data: "",
-        nonce: ""
+        nonce: "",
+        txFee: ""
     };
 
-    function txToObject(tx) {
-        const txStatus = $scope.txStatus;
-        if (tx) {
-            $scope.txInfo = Object.assign({}, tx, {
-                _status:
-                    tx.status === "0x0"
-                        ? "failed"
-                        : tx.status === "0x1"
-                            ? "succeeded"
-                            : "unknown",
-                status: tx.blockNumber ? txStatus.mined : txStatus.found,
-                hash: tx.hash,
-                from: ethUtil.toChecksumAddress(tx.from),
-                to: tx.to ? ethUtil.toChecksumAddress(tx.to) : "",
-                value: new BigNumber(tx.value).toString(),
-                gasLimit: new BigNumber(tx.gas).toString(),
-                gasPrice: {
-                    wei: new BigNumber(tx.gasPrice).toString(),
-                    gwei: new BigNumber(tx.gasPrice)
-                        .div(etherUnits.getValueOfUnit("gwei"))
-                        .toString(),
-                    eth: etherUnits.toEther(tx.gasPrice, "wei")
-                },
-                data: tx.input === "0x" ? "" : tx.input,
-                nonce: new BigNumber(tx.nonce).toString()
-            });
-        } else {
-            $scope.txInfo.status = txStatus.notFound;
-        }
-    }
+    $scope.mapTxToScope = function mapTxToScope(tx) {
+        const _gasPrice = new BigNumber(tx.gasPrice);
 
-    $scope.checkTxStatus = function() {
-        const { hash } = $scope.txInfo;
+        const _gas = new BigNumber(tx.gas);
 
-        if (!Validator.isValidTxHash(hash)) {
-            uiFuncs.notifier.danger(globalFuncs.errorMsgs[36]);
-        } else {
-            ajaxReq.getTransaction(hash, function(data) {
-                if (data.error) $scope.notifier.danger(data.msg);
-                else {
-                    txToObject(data.data);
-                }
-            });
-        }
+        const _value = new BigNumber(tx.value);
+
+        const txFee = etherUnits.toEther(_gasPrice.mul(_gas), "wei");
+
+        $scope.txInfo = Object.assign({}, tx, {
+            status: tx.blockNumber
+                ? $scope.txStatus.mined
+                : $scope.txStatus.found,
+            hash: tx.hash,
+            from: ethUtil.toChecksumAddress(tx.from),
+            to: tx.to ? ethUtil.toChecksumAddress(tx.to) : "",
+            value: _value.toString(),
+            valueStr: etherUnits.toEther(_value, "wei"),
+            gasLimit: _gas.toString(),
+            gasPrice: {
+                wei: _gasPrice.toString(),
+                gwei: _gasPrice
+                    .div(etherUnits.getValueOfUnit("gwei"))
+                    .toString(),
+                eth: etherUnits.toEther(tx.gasPrice, "wei")
+            },
+            txFee,
+            // txFeeFiat: etherUnits.toFiat(txFee, "ether", $scope.coinPrices[ajaxReq.type].usd),
+            data: tx.input === "0x" ? "" : tx.input,
+            nonce: new BigNumber(tx.nonce).toString()
+        });
     };
-
-    if ($scope.txInfo.hash) {
-        $scope.checkTxStatus();
-    }
 };
