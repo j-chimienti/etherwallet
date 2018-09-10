@@ -27,20 +27,14 @@
 </form>
 
 <div ng-show="showDisplayOnTrezor()">
-    <h5 translate="sidebar_DisplayOnTrezor">Display address on TREZOR</h5>
-    <ul class="account-info">
-        <li><a href="" ng-click="displayOnTrezor()" translate="sidebar_DisplayOnTrezor">Display address
-            on
-            TREZOR</a></li>
-    </ul>
+    <h5
+        ng-click="displayOnTrezor()"
+        translate="sidebar_DisplayOnTrezor">Display address on TREZOR</h5>
 </div>
 <div ng-show="showDisplayOnLedger()">
-    <h5 translate="sidebar_DisplayOnLedger">Display address on Ledger</h5>
-    <ul class="account-info">
-        <li><a href="" ng-click="displayOnLedger()" translate="sidebar_DisplayOnLedger">Display address
-            on
-            Ledger</a></li>
-    </ul>
+    <h5 translate="sidebar_DisplayOnLedger"
+        ng-click="displayOnLedger()"
+    >Display address on Ledger</h5>
 </div>
 
 
