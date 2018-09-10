@@ -1,3 +1,5 @@
+const actions = require("../actions");
+
 var switchNetworkCtrl = function($scope, $rootScope, globalService) {
     $scope.$watch(
         () => globalService.currentTab,
@@ -11,7 +13,7 @@ var switchNetworkCtrl = function($scope, $rootScope, globalService) {
 
                     if (network.toUpperCase() !== curNetwork.toUpperCase()) {
                         $rootScope.$broadcast(
-                            "ChangeNode",
+                            actions.changeNode,
                             globalFuncs.networks[network.toUpperCase()] || 0
                         );
                     }

@@ -7,7 +7,7 @@ var sendTxCtrl = function($scope, $sce, $rootScope, walletService) {
     );
 
     if (gasPrice) {
-        $rootScope.$broadcast("ChangeGas", gasPrice);
+        $rootScope.$broadcast(actions.changeGas, gasPrice);
     }
 
     $scope.networks = globalFuncs.networks;

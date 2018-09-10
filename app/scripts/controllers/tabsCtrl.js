@@ -57,11 +57,9 @@ module.exports = function TabsController(
                 walletService.wallet.getAddressString()
             );
         },
-        (_val, _oldVal) => {
+        _val => {
             if (_val) {
                 if (Validator.isValidAddress(_val)) {
-                    // console.log(actions.updateWallet, _val, _oldVal);
-
                     $rootScope.$broadcast(actions.updateWallet, _val);
                 }
             }
@@ -492,11 +490,11 @@ Network: <strong>${$scope.nodeType}</strong> provided by <strong>${
         ele.scrollLeft += val;
     };
 
-    $scope.$on("ChangeNode", function(event, nodeId) {
+    $scope.$on(actions.changeNode, function(event, nodeId) {
         $scope.changeNode(nodeId);
     });
 
-    $scope.$on("ChangeGas", function($event, gasPrice) {
+    $scope.$on(actions.changeGas, function($event, gasPrice) {
         $scope.gas.value = gasPrice;
         $scope.validateGasPrice();
     });

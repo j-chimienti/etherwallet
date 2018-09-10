@@ -4,7 +4,17 @@ const AddressOnlyWallet = require("../AddressOnlyWallet");
 
 const _sample = require("lodash/sample");
 
-const decryptWalletCtrl = function(
+const actions = require("../actions");
+
+// helper function that removes 0x prefix from strings
+function fixPkey(key) {
+    if (key.indexOf("0x") === 0) {
+        return key.slice(2);
+    }
+    return key;
+}
+
+module.exports = function DecryptWalletController(
     $rootScope,
     $scope,
     $sce,
@@ -166,9 +176,9 @@ const decryptWalletCtrl = function(
     };
     $scope.AddRemoveHDAddresses = function(isAdd) {
         if (
-            $scope.walletType == "ledger" ||
-            $scope.walletType == "trezor" ||
-            $scope.walletType == "digitalBitbox"
+            $scope.walletType === "ledger" ||
+            $scope.walletType === "trezor" ||
+            $scope.walletType === "digitalBitbox"
         ) {
             if (isAdd)
                 $scope.setHDAddressesHWWallet(
@@ -297,7 +307,7 @@ const decryptWalletCtrl = function(
     };
     $scope.digitalBitboxCallback = function(result, error) {
         $scope.HDWallet.digitalBitboxSecret = "";
-        if (typeof result != "undefined") {
+        if (typeof result !== "undefined") {
             $scope.HWWalletCreate(
                 result["publicKey"],
                 result["chainCode"],
@@ -309,11 +319,9 @@ const decryptWalletCtrl = function(
     };
     $scope.scanLedger = function() {
         $scope.ledger = new Ledger3("w0w");
-        var app = new ledgerEth($scope.ledger);
+        const app = new ledgerEth($scope.ledger);
 
-        var path = $scope.getLedgerPath();
-
-        console.log("path", path);
+        const path = $scope.getLedgerPath();
 
         app.getAddress(path, $scope.ledgerCallback, false, true);
     };
@@ -370,7 +378,10 @@ const decryptWalletCtrl = function(
                     );
 
                     if (_node) {
-                        $rootScope.$broadcast("ChangeNode", _node.key || 0);
+                        $rootScope.$broadcast(
+                            actions.changeNode,
+                            _node.key || 0
+                        );
                     }
 
                     $scope.notifier.info(globalFuncs.successMsgs[6]);
@@ -378,14 +389,6 @@ const decryptWalletCtrl = function(
             });
         }
     };
-
-    // helper function that removes 0x prefix from strings
-    function fixPkey(key) {
-        if (key.indexOf("0x") === 0) {
-            return key.slice(2);
-        }
-        return key;
-    }
 
     if (globalService.currentTab === globalService.tabs.viewWalletInfo.id) {
         const addr =
@@ -399,4 +402,3 @@ const decryptWalletCtrl = function(
         }
     }
 };
-module.exports = decryptWalletCtrl;

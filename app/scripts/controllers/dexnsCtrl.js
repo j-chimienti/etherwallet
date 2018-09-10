@@ -79,7 +79,10 @@ const dexnsCtrl = function(
     );
 
     if (ajaxReq.type !== nodes.nodeTypes.ETC) {
-        $rootScope.$broadcast("ChangeNode", globalFuncs.networks.ETC || 0);
+        $rootScope.$broadcast(
+            actions.changeNode,
+            globalFuncs.networks.ETC || 0
+        );
     }
 
     // TODO
