@@ -1,4 +1,6 @@
 "use strict";
+const actions = require("../actions");
+
 var sendTxCtrl = function($scope, $sce, $rootScope, walletService) {
     const gasPrice = parseFloat(
         globalFuncs.urlGet("gasprice") || globalFuncs.urlGet("gasPrice") || ""
@@ -142,45 +144,38 @@ var sendTxCtrl = function($scope, $sce, $rootScope, walletService) {
         )
             $scope.hasQueryString = true; // if there is a query string, show an warning at top of page
     };
-    $scope.$watch(
-        function() {
-            if (walletService.wallet == null) return null;
-            return walletService.wallet.getAddressString();
-        },
-        function() {
-            if (walletService.wallet == null) return;
-            $scope.wallet = walletService.wallet;
-            $scope.wd = true;
+    $scope.$on(actions.updateWallet, function() {
+        if (walletService.wallet == null) return;
+        $scope.wallet = walletService.wallet;
+        $scope.wd = true;
 
-            if ($scope.parentTxConfig) {
-                var setTxObj = function() {
-                    Object.assign($scope.tx, $scope.parentTxConfig);
+        if ($scope.parentTxConfig) {
+            var setTxObj = function() {
+                Object.assign($scope.tx, $scope.parentTxConfig);
 
-                    $scope.addressDrtv.ensAddressField =
-                        $scope.parentTxConfig.to;
-                    if ($scope.parentTxConfig.gasLimit) {
-                        $scope.tx.gasLimit = $scope.parentTxConfig.gasLimit;
-                        $scope.gasLimitChanged = true;
-                    }
-                };
-                $scope.$watch(
-                    "parentTxConfig",
-                    function() {
-                        setTxObj();
-                    },
-                    true
-                );
+                $scope.addressDrtv.ensAddressField = $scope.parentTxConfig.to;
+                if ($scope.parentTxConfig.gasLimit) {
+                    $scope.tx.gasLimit = $scope.parentTxConfig.gasLimit;
+                    $scope.gasLimitChanged = true;
+                }
+            };
+            $scope.$watch(
+                "parentTxConfig",
+                function() {
+                    setTxObj();
+                },
+                true
+            );
 
-                setTxObj();
-            }
-
-            $scope.wallet.setBalance(applyScope);
-            $scope.wallet.setTokens();
-
-            $scope.setTokenSendMode();
-            defaultInit();
+            setTxObj();
         }
-    );
+
+        $scope.wallet.setBalance(applyScope);
+        $scope.wallet.setTokens();
+
+        $scope.setTokenSendMode();
+        defaultInit();
+    });
     $scope.$watch("ajaxReq.key", function() {
         if ($scope.wallet) {
             $scope.setSendMode("ether");

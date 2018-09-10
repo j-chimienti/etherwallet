@@ -228,6 +228,7 @@ app.directive("transactionCost", [transactionCost]);
 
 app.controller("tabsCtrl", [
     "$http",
+    "$rootScope",
     "$scope",
     "globalService",
     "walletService",

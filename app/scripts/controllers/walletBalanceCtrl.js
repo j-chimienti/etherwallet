@@ -1,4 +1,6 @@
 "use strict";
+const actions = require("../actions");
+
 var walletBalanceCtrl = function(
     $scope,
     $sce,
@@ -43,23 +45,16 @@ var walletBalanceCtrl = function(
 
     $scope.customTokenField = false;
 
-    $scope.$watch(
-        function() {
-            return (
-                walletService.wallet && walletService.wallet.getAddressString()
-            );
-        },
-        function(val, _val) {
-            if (!val) return;
-            $scope.wallet = walletService.wallet;
+    $scope.$on(actions.updateWallet, function(val, _val) {
+        if (!val) return;
+        $scope.wallet = walletService.wallet;
 
-            coldStakingService.contract.initStakerInfo();
+        coldStakingService.contract.initStakerInfo();
 
-            if (coldStakingService.validNetwork()) {
-                coldStakingService.staker_info();
-            }
+        if (coldStakingService.validNetwork()) {
+            coldStakingService.staker_info();
         }
-    );
+    });
 
     /*
 

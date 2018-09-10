@@ -1,4 +1,5 @@
 "use strict";
+const actions = require("../actions");
 
 var messagesCtrl = function(
     $scope,
@@ -272,38 +273,30 @@ var messagesCtrl = function(
         }
     }
 
-    $scope.$watch(
-        function() {
-            if (!walletService.wallet) {
-                return null;
-            }
-            return walletService.wallet.getAddressString();
-        },
-        function(address) {
-            if (!address) {
-                $scope.unlockWallet = false;
-                $interval.cancel($scope.interval);
-                return;
-            }
-            $scope.unlockWallet = true;
-
-            $scope.wallet = walletService.wallet;
-
+    $scope.$on(actions.updateWallet, function(address) {
+        if (!address) {
+            $scope.unlockWallet = false;
             $interval.cancel($scope.interval);
-            $scope.interval = null;
-
-            messageService.messagesList = {};
-
-            messageService.loadingMessages = true;
-
-            initMessages(walletService.wallet.getAddressString());
-
-            $scope.interval = $interval(
-                messageInterval,
-                1000 * config.fetchMessageInterval
-            );
+            return;
         }
-    );
+        $scope.unlockWallet = true;
+
+        $scope.wallet = walletService.wallet;
+
+        $interval.cancel($scope.interval);
+        $scope.interval = null;
+
+        messageService.messagesList = {};
+
+        messageService.loadingMessages = true;
+
+        initMessages(walletService.wallet.getAddressString());
+
+        $scope.interval = $interval(
+            messageInterval,
+            1000 * config.fetchMessageInterval
+        );
+    });
 
     $scope.$watch("NUMBER_OF_NEW_MESSAGES", val => {
         const {

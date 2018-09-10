@@ -1,4 +1,5 @@
 "use strict";
+const actions = require("../actions");
 
 const contractsCtrl = function($scope, $sce, $rootScope, walletService) {
     walletService.wallet = null;
@@ -44,18 +45,12 @@ const contractsCtrl = function($scope, $sce, $rootScope, walletService) {
 
     $scope.contract = initContract;
 
-    $scope.$watch(
-        function() {
-            if (walletService.wallet == null) return null;
-            return walletService.wallet.getAddressString();
-        },
-        function() {
-            if (walletService.wallet == null) return;
-            $scope.wallet = walletService.wallet;
-            $scope.wd = true;
-            $scope.tx.nonce = 0;
-        }
-    );
+    $scope.$on(actions.updateWallet, function() {
+        if (walletService.wallet == null) return;
+        $scope.wallet = walletService.wallet;
+        $scope.wd = true;
+        $scope.tx.nonce = 0;
+    });
 
     $scope.$watch("contract.address", function(newValue, oldValue) {
         if (Validator.isValidAddress($scope.contract.address)) {

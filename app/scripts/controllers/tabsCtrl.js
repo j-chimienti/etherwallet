@@ -1,6 +1,10 @@
 "use strict";
-var tabsCtrl = function(
+
+const actions = require("../actions");
+
+module.exports = function TabsController(
     $http,
+    $rootScope,
     $scope,
     globalService,
     walletService,
@@ -43,6 +47,26 @@ var tabsCtrl = function(
     $scope.nodeService = $scope.ajaxReq.service;
 
     initNode();
+
+    $scope.$watch(
+        () => {
+            return (
+                walletService &&
+                walletService.hasOwnProperty("wallet") &&
+                walletService.wallet instanceof Wallet &&
+                walletService.wallet.getAddressString()
+            );
+        },
+        (_val, _oldVal) => {
+            if (_val) {
+                if (Validator.isValidAddress(_val)) {
+                    // console.log(actions.updateWallet, _val, _oldVal);
+
+                    $rootScope.$broadcast(actions.updateWallet, _val);
+                }
+            }
+        }
+    );
 
     $scope.$watch("customNode.options", function(val) {
         if (val) {
@@ -492,4 +516,3 @@ Network: <strong>${$scope.nodeType}</strong> provided by <strong>${
         .bind("scroll", $scope.setOnScrollArrows);
     globalFuncs.changeHash = $scope.setHash;
 };
-module.exports = tabsCtrl;

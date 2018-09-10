@@ -1,7 +1,7 @@
 "use strict";
 var Wallet = function(priv, pub, path, hwType, hwTransport) {
-    if (typeof priv != "undefined") {
-        this.privKey = priv.length == 32 ? priv : Buffer(priv, "hex");
+    if (typeof priv !== "undefined") {
+        this.privKey = priv.length === 32 ? priv : Buffer(priv, "hex");
     }
     this.pubKey = pub;
     this.path = path;

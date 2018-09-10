@@ -1,4 +1,6 @@
 "use strict";
+const actions = require("../actions");
+
 /* 0 -> nothing
  *  1 -> user
  *  2 -> token
@@ -81,19 +83,13 @@ const dexnsCtrl = function(
     }
 
     // TODO
-    $scope.$watch(
-        function() {
-            if (walletService.wallet == null) return null;
-            return walletService.wallet.getAddressString();
-        },
-        function() {
-            if (walletService.wallet == null) return;
-            $scope.wallet = walletService.wallet;
-            $scope.wd = true;
-            $scope.wallet.setBalance();
-            $scope.wallet.setTokens();
-        }
-    );
+    $scope.$on(actions.updateWallet, function() {
+        if (walletService.wallet == null) return;
+        $scope.wallet = walletService.wallet;
+        $scope.wd = true;
+        $scope.wallet.setBalance();
+        $scope.wallet.setTokens();
+    });
 
     $scope.handleRegisterAndUpdateName = function(_form) {
         if (!_form.$valid) {

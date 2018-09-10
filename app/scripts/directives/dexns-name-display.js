@@ -1,4 +1,5 @@
 "use strict";
+const actions = require("../actions");
 
 const dexnsNameDisplay = function(dexnsService, walletService, globalService) {
     return {
@@ -67,20 +68,16 @@ const dexnsNameDisplay = function(dexnsService, walletService, globalService) {
             }
 
             $scope.goToDexns = () => {
-                globalService.currentTab = globalService.tabs.dexns.id;
                 window.location.hash = globalService.tabs.dexns.url;
+
+                globalService.currentTab = globalService.tabs.dexns.id;
             };
 
-            // todo: replace listener with $on when unlocking new wallet
-
-            $scope.$watch(
-                () => walletService.wallet.getAddressString(),
-                (_val, oldVal) => {
-                    if (!angular.equals(_val, oldVal)) {
-                        Object.assign($scope.input, { address: _val });
-                    }
+            $scope.$on(actions.updateWallet, (_val, oldVal) => {
+                if (!angular.equals(_val, oldVal)) {
+                    Object.assign($scope.input, { address: _val });
                 }
-            );
+            });
         }
     };
 };
