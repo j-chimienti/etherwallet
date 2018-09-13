@@ -104,7 +104,7 @@ var signMsgCtrl = require("./controllers/signMsgCtrl");
 var contractsCtrl = require("./controllers/contractsCtrl");
 var broadcastTxCtrl = require("./controllers/broadcastTxCtrl");
 var ensCtrl = require("./controllers/ensCtrl");
-var dexnsCtrl = require("./controllers/dexnsCtrl");
+var DexnsController = require("./controllers/DexnsController");
 var footerCtrl = require("./controllers/footerCtrl");
 var offlineTxCtrl = require("./controllers/offlineTxCtrl");
 var walletBalanceCtrl = require("./controllers/walletBalanceCtrl");
@@ -126,6 +126,7 @@ const dexnsService = require("./services/dexnsService");
 const backgroundNodeService = require("./services/backgroundNodeService");
 
 // DIRECTIVES
+const customNodeForm = require("./directives/customNodeForm");
 const accountBalanceTable = require("./directives/accountBalanceTable");
 const tokenBalances = require("./directives/tokenBalances");
 const sidebarAds = require("./directives/sidebar-ads");
@@ -218,6 +219,8 @@ app.directive("dexnsNameDisplay", [
     "globalService",
     dexnsNameDisplay
 ]);
+app.directive("sendTxModal", require("./directives/sendTxModal"));
+
 app.directive("eosKeypair", require("./directives/eos-keypair"));
 app.directive("lookup", ["$rootScope", "lookupService", lookup]);
 app.directive("blockieAddress", blockiesDrtv);
@@ -236,6 +239,12 @@ app.directive("messagesOverview", [
 app.directive("arrayInputDrtv", arrayInputDrtv);
 app.directive("newMessagesDrtv", ["globalService", newMessagesDrtv]);
 app.directive("transactionCost", [transactionCost]);
+app.directive("sendContractTx", [
+    "walletService",
+    require("./directives/sendContractTx")
+]);
+
+app.directive("customNodeForm", [customNodeForm]);
 
 app.controller("tabsCtrl", [
     "$http",
@@ -301,14 +310,14 @@ app.controller("ensCtrl", [
     "walletService",
     ensCtrl
 ]);
-app.controller("dexnsCtrl", [
+app.controller("DexnsController", [
     "$scope",
     "$sce",
     "$rootScope",
     "walletService",
     "backgroundNodeService",
     "dexnsService",
-    dexnsCtrl
+    DexnsController
 ]);
 app.controller("footerCtrl", ["$scope", footerCtrl]);
 app.controller("offlineTxCtrl", [
