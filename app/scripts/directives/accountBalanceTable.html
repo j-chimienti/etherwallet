@@ -130,20 +130,5 @@
 
     </tbody>
     <tfoot>
-    <tr
-    >
-        <td><b>Equivalent Values:</b></td>
-        <td ng-show="coldStakingService.validNetwork()"></td>
-        <td class="text-right">BTC: <span class="mono wrap">{{walletService.wallet.btcBalance | number}}</span>
-        </td>
-    </tr>
-    <tr
-    >
-        <td ng-show="coldStakingService.validNetwork()" style="border-top: none;"></td>
-        <td
-            style="border: none;"
-            colspan="2" class="text-right">USD: <span
-            class="mono wrap">{{walletService.wallet.usdBalance | currency:"$"}}</span></td>
-    </tr>
     </tfoot>
 </table>

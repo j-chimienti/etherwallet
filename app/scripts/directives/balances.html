@@ -1,0 +1,69 @@
+<table class="table table-responsive">
+    <caption translate="sidebar_AccountBal">Account Balance</caption>
+    <thead>
+    <tr>
+        <th>Asset</th>
+        <th class="text-right">Quantity</th>
+        <th class="text-right">Price</th>
+        <th class="text-right">Total</th>
+    </tr>
+    </thead>
+    <tbody>
+
+
+    <tr>
+        <!-- name -->
+        <td>
+            <coin-icon icon="{{ajaxReq.type.toLowerCase()}}"/>
+        </td>
+        <td class="text-right pointer">
+          <span ng-dblclick="showLongBal = !showLongBal">
+                <span class="mono wrap"
+                      ng-show="!showLongBal">{{walletService.wallet.balance | number}}</span>
+                <span class="mono wrap" ng-show="showLongBal">{{walletService.wallet.balance}}</span>
+           </span>
+        </td>
+        <td class="text-right">
+            {{coinPriceService.coinPrices[ajaxReq.type].usd | currency}}
+        </td>
+
+        <td class="text-right">{{walletService.wallet.usdBalance | currency}}</td>
+
+
+    </tr>
+
+    <tr ng-repeat="altBalance in toArray(alternativeBalance) | filter: notAjaxReq">
+
+        <td class="text-left">
+            <coin-icon icon="{{altBalance.symbol.toLowerCase()}}"></coin-icon>
+        </td>
+        <td class="account-info point text-right"
+            ng-dblclick="showLongBal=!showLongBal"
+            title="{{altBalance.balance}} (Double-Click)"
+        >
+            <span class="mono wrap" ng-show="!showLongBal">{{altBalance.balance | number}}</span>
+            <span class="mono wrap" ng-show="showLongBal">{{altBalance.balance}}</span>
+        </td>
+        <td class="text-right mono">
+            {{coinPriceService.coinPrices[altBalance.symbol.toUpperCase()].usd | currency }}
+        </td>
+        <td class="text-right mono">{{coinPriceService.coinPrices[altBalance.symbol.toUpperCase()].usd * +altBalance.balance | currency }}</td>
+    </tr>
+
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="2">
+            Equivalent Values:
+        </td>
+        <td class="text-right mono">
+            <coin-icon icon="etc"></coin-icon>
+            {{totals().total_usd | number}}
+        </td>
+        <td class="text-right mono">
+            <coin-icon icon="btc"></coin-icon>
+            {{totals().total_btc | number}}
+        </td>
+    </tr>
+    </tfoot>
+</table>

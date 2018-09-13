@@ -3,8 +3,20 @@
 const _url = (sym = "ETC", syms = "USD,EUR,GBP,BTC,CHF") =>
     `https://min-api.cryptocompare.com/data/price?fsym=${sym}&tsyms=${syms}`;
 
+const initCoins = [
+    nodes.nodeTypes.ETC,
+    nodes.nodeTypes.CLO,
+    nodes.nodeTypes.ETH,
+    nodes.nodeTypes.UBQ,
+    nodes.nodeTypes.EXP
+];
+
 const coinPriceService = function coinPriceService() {
     this.coinPrices = {};
+
+    this.initCoinPrices = function() {
+        return Promise.all(initCoins.map(coin => this.getCoinPrice(coin)));
+    };
 
     this.getCoinPrice = function getCoinPrice(coin = ajaxReq.type) {
         const uri = _url(coin);

@@ -1,7 +1,7 @@
 "use strict";
 require("./localStoragePolyfill");
 var IS_CX = false;
-if (typeof chrome != "undefined")
+if (typeof chrome !== "undefined")
     IS_CX = chrome.windows === undefined ? false : true;
 var angular = require("angular");
 var angularTranslate = require("angular-translate");
@@ -123,6 +123,7 @@ const dexnsService = require("./services/dexns.service");
 const backgroundNodeService = require("./services/backgroundNode.service");
 
 // DIRECTIVES
+const balancesTable = require("./directives/balances");
 const customNodeForm = require("./directives/customNodeForm");
 const accountBalanceTable = require("./directives/accountBalanceTable");
 const tokenBalances = require("./directives/tokenBalances");
@@ -140,7 +141,7 @@ const messagesOverview = require("./directives/messagesOverview");
 const cssThemeDrtv = require("./directives/cssThemeDrtv");
 const cxWalletDecryptDrtv = require("./directives/cxWalletDecryptDrtv");
 const fileReaderDrtv = require("./directives/fileReaderDrtv");
-const transactionCost = require("./directives/transactionCostDtrv");
+const transactionCost = require("./directives/transactionCost");
 const arrayInputDrtv = require("./directives/arrayInputDrtv");
 const newMessagesDrtv = require("./directives/newMessagesDrtv");
 const sendTransactionFormDrtv = require("./directives/sendTransactionForm");
@@ -201,6 +202,11 @@ app.factory("lookupService", ["dexnsService", lookupService]);
 app.factory("messageService", messageService);
 app.factory("coldStakingService", ["walletService", coldStakingService]);
 
+app.directive("balancesTable", [
+    "walletService",
+    "coldStakingService",
+    balancesTable
+]);
 app.directive("coinIcon", coinIcon);
 app.directive("accountBalanceTable", accountBalanceTable);
 app.directive("sidebarAds", sidebarAds);
