@@ -14,7 +14,9 @@
            ng-class="swapInitForm.fromVal.$valid ? 'is-valid' : 'is-invalid'"
     />
     <div class="dropdown">
-        <a class="btn btn-default dropdown-toggle" ng-click="toggleDropdown(true)">
+        <a class="btn dropdown-toggle"
+
+           ng-click="toggleDropdown(true)">
             <coin-icon icon="{{swapOrder.fromCoin.toLowerCase()}}">
 
             </coin-icon>
@@ -75,7 +77,7 @@
 
 
     <div class="dropdown">
-        <a class="btn btn-default dropdown-toggle" ng-click="toggleDropdown(false)">
+        <a class="btn dropdown-toggle" ng-click="toggleDropdown(false)">
             <coin-icon icon="{{swapOrder.toCoin.toLowerCase()}}">
             </coin-icon>
             <span>
@@ -131,5 +133,37 @@
             Let's do this!
         </button>
     </div>
+
+    <table class="table table-no-border col-xs-12 clearfix"
+         ng-show="_showConversionRatio()"
+    >
+        <caption>
+            Conversion Ratio
+        </caption>
+      <tbody>
+
+      <tr>
+          <td class="mono text-right">
+              {{swapOrder.toVal / swapOrder.fromVal}}
+          </td>
+          <td>
+              <coin-icon icon="{{swapOrder.toCoin.toLowerCase()}}"></coin-icon>
+              {{'/'}}
+              <coin-icon icon="{{swapOrder.fromCoin.toLowerCase()}}"></coin-icon>
+          </td>
+      </tr>
+      <tr>
+          <td class="mono text-right">
+              {{swapOrder.fromVal / swapOrder.toVal}}
+          </td>
+          <td>
+              <coin-icon icon="{{swapOrder.fromCoin.toLowerCase()}}"></coin-icon>
+              {{'/'}}
+              <coin-icon icon="{{swapOrder.toCoin.toLowerCase()}}"></coin-icon>
+          </td>
+
+      </tr>
+      </tbody>
+    </table>
 
 </article>
