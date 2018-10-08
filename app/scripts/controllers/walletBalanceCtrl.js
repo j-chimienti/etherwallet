@@ -54,16 +54,20 @@ var walletBalanceCtrl = function(
             if (!val) return;
             $scope.wallet = walletService.wallet;
 
-            coldStakingService.contract.initStakerInfo();
-
-            if (coldStakingService.validNetwork()) {
-                coldStakingService.staker_info();
-            }
-
-            $scope.setAllBalance();
+            $scope.refreshBalances();
         }
     );
 
+    $scope.refreshBalances = function() {
+        coldStakingService.contract.initStakerInfo();
+
+        if (coldStakingService.validNetwork()) {
+            coldStakingService.staker_info();
+        }
+
+        walletService.wallet.setBalance();
+        $scope.setAllBalance();
+    };
     /*
 
 
